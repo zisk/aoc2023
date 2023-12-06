@@ -67,16 +67,39 @@ func ParseGameResult(resultString string) GameResult {
 	return result
 }
 
+func (g *Game) GetMiniumCubePower() int {
+	var rMax, gMax, bMax int
+
+	for _, r := range g.results {
+		if r.red > rMax {
+			rMax = r.red
+		}
+		if r.green > gMax {
+			gMax = r.green
+		}
+		if r.blue > bMax {
+			bMax = r.blue
+		}
+	}
+	return rMax * gMax * bMax
+}
+
 func main() {
 	in, _ := util.InputToTxt()
 
 	//part 1
 	validCount := 0
+
+	//part 2
+	gameProduct := 0
 	for _, g := range in {
 		game := NewGame(g)
 		if game.CheckGame() {
 			validCount += game.id
 		}
+		p := game.GetMiniumCubePower()
+		gameProduct += p
 	}
 	fmt.Printf("Part 1: %d\n", validCount)
+	fmt.Printf("Part 2: %d\n", gameProduct)
 }
